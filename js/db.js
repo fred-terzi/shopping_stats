@@ -123,30 +123,25 @@ class ShoppingDB {
      * @returns {Promise<void>}
      */
     async updateItem(id, updates) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const item = await this.getItem(id);
-                if (!item) {
-                    reject(new Error('Item not found'));
-                    return;
-                }
+        const item = await this.getItem(id);
+        if (!item) {
+            throw new Error('Item not found');
+        }
 
-                const updatedItem = { ...item, ...updates, id };
-                
-                const transaction = this.db.transaction(['items'], 'readwrite');
-                const store = transaction.objectStore('items');
-                const request = store.put(updatedItem);
+        const updatedItem = { ...item, ...updates, id };
+        
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['items'], 'readwrite');
+            const store = transaction.objectStore('items');
+            const request = store.put(updatedItem);
 
-                request.onsuccess = () => {
-                    resolve();
-                };
+            request.onsuccess = () => {
+                resolve();
+            };
 
-                request.onerror = () => {
-                    reject(new Error('Failed to update item'));
-                };
-            } catch (error) {
-                reject(error);
-            }
+            request.onerror = () => {
+                reject(new Error('Failed to update item'));
+            };
         });
     }
 
@@ -156,21 +151,17 @@ class ShoppingDB {
      * @returns {Promise<void>}
      */
     async toggleItemCompleted(id) {
-        try {
-            const item = await this.getItem(id);
-            if (!item) {
-                throw new Error('Item not found');
-            }
-
-            const updates = {
-                completed: !item.completed,
-                completedAt: !item.completed ? new Date().toISOString() : null
-            };
-
-            return this.updateItem(id, updates);
-        } catch (error) {
-            throw error;
+        const item = await this.getItem(id);
+        if (!item) {
+            throw new Error('Item not found');
         }
+
+        const updates = {
+            completed: !item.completed,
+            completedAt: !item.completed ? new Date().toISOString() : null
+        };
+
+        return this.updateItem(id, updates);
     }
 
     /**
@@ -219,18 +210,14 @@ class ShoppingDB {
      * @returns {Promise<Object>}
      */
     async getStats() {
-        try {
-            const items = await this.getAllItems();
-            const completed = items.filter(item => item.completed).length;
-            const pending = items.filter(item => !item.completed).length;
+        const items = await this.getAllItems();
+        const completed = items.filter(item => item.completed).length;
+        const pending = items.filter(item => !item.completed).length;
 
-            return {
-                total: items.length,
-                completed,
-                pending
-            };
-        } catch (error) {
-            throw error;
-        }
+        return {
+            total: items.length,
+            completed,
+            pending
+        };
     }
 }

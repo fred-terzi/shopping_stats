@@ -20,8 +20,8 @@ Gemfile.lock
 # Node modules (if any)
 node_modules/
 
-# SVG source files (keep PNGs only)
-*.svg
+# SVG source files in icons directory (keep PNGs only)
+icons/*.svg
 
 # Python cache
 __pycache__/

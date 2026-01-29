@@ -66,6 +66,27 @@ class ShoppingApp {
             e.preventDefault();
             this.handleAddItem();
         });
+
+        // Event delegation for shopping list items
+        this.elements.shoppingList.addEventListener('change', (e) => {
+            if (e.target.classList.contains('item-checkbox')) {
+                const itemElement = e.target.closest('[id^="item-"]');
+                if (itemElement) {
+                    const itemId = parseInt(itemElement.id.replace('item-', ''));
+                    this.handleToggleItem(itemId);
+                }
+            }
+        });
+
+        this.elements.shoppingList.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-btn')) {
+                const itemElement = e.target.closest('[id^="item-"]');
+                if (itemElement) {
+                    const itemId = parseInt(itemElement.id.replace('item-', ''));
+                    this.handleDeleteItem(itemId);
+                }
+            }
+        });
     }
 
     /**
@@ -125,16 +146,6 @@ class ShoppingApp {
             this.elements.shoppingList.innerHTML = items.map(item => 
                 this.createItemElement(item)
             ).join('');
-
-            // Add event listeners to all items
-            items.forEach(item => {
-                const itemElement = document.getElementById(`item-${item.id}`);
-                const checkbox = itemElement.querySelector('.item-checkbox');
-                const deleteBtn = itemElement.querySelector('.delete-btn');
-
-                checkbox.addEventListener('change', () => this.handleToggleItem(item.id));
-                deleteBtn.addEventListener('click', () => this.handleDeleteItem(item.id));
-            });
 
         } catch (error) {
             console.error('Failed to render items:', error);
