@@ -227,10 +227,10 @@ MIT License - see LICENSE file for details
 ## Screenshots
 
 ### Empty State
-<img src="screenshots/empty-state.png" alt="Empty Shopping List with iOS-style design" width="375">
+<img src="screenshots/empty-state.png" alt="Empty Shopping List with iOS-style design" width="375px" height="890px">
 
 ### With Items
-<img src="screenshots/with-items.png" alt="Shopping List with items showing modern formatting" width="375">
+<img src="screenshots/with-items.png" alt="Shopping List with items showing modern formatting" width="375px" height="882px">
 
 ## Support
 
