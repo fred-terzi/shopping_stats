@@ -227,10 +227,10 @@ MIT License - see LICENSE file for details
 ## Screenshots
 
 ### Empty State
-![Empty Shopping List](https://github.com/user-attachments/assets/4aee15e9-3718-4be6-9526-8b30535ac92f)
+<img src="screenshots/empty-state.png" alt="Empty Shopping List with iOS-style design" width="375">
 
 ### With Items
-![Shopping List with Items](https://github.com/user-attachments/assets/c46d960d-dfa2-4c59-84f0-a833cfb453ee)
+<img src="screenshots/with-items.png" alt="Shopping List with items showing modern formatting" width="375">
 
 ## Support
 
