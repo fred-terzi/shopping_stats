@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Shopping Stats - Track your shopping habits and manage your shopping list offline">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#007aff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Shopping Stats">
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
@@ -13,82 +16,100 @@
     
     <title>Shopping Stats</title>
     
-    <!-- Styles -->
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div id="app">
-        <!-- Header -->
-        <header class="header">
-            <h1>Shopping Stats</h1>
-            <div class="status-indicator">
-                <span id="online-status" class="status-dot online"></span>
-                <span id="status-text">Online</span>
-            </div>
-        </header>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <h1 class="navbar-title">Shopping Stats</h1>
+            <span id="online-status" class="status-badge"></span>
+        </nav>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Add Item Form -->
-            <section class="add-item-section">
-                <h2>Add Item</h2>
-                <form id="add-item-form" class="add-form">
-                    <input 
-                        type="text" 
-                        id="item-name" 
-                        placeholder="Item name" 
-                        required 
-                        autocomplete="off"
-                    >
-                    <input 
-                        type="number" 
-                        id="item-quantity" 
-                        placeholder="Quantity" 
-                        value="1" 
-                        min="1"
-                    >
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
+            
+            <!-- Add Item Card -->
+            <section class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Add Item</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="item-name" class="form-label">Item Name</label>
+                        <input 
+                            type="text" 
+                            id="item-name" 
+                            class="form-input" 
+                            placeholder="Enter item name" 
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="item-quantity" class="form-label">Quantity</label>
+                        <input 
+                            type="number" 
+                            id="item-quantity" 
+                            class="form-input" 
+                            value="1" 
+                            min="1"
+                        >
+                    </div>
+                    <button id="add-item-btn" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Add Item
+                    </button>
+                </div>
             </section>
 
-            <!-- Shopping List -->
-            <section class="shopping-list-section">
-                <h2>Shopping List</h2>
-                <div id="shopping-list" class="shopping-list">
-                    <!-- Items will be dynamically added here -->
+            <!-- Statistics Card -->
+            <section class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Statistics</h2>
                 </div>
-                <div id="empty-state" class="empty-state">
-                    <p>Your shopping list is empty. Add your first item above!</p>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-items">0</div>
+                            <div class="stat-label">Total Items</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value stat-value-success" id="completed-items">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value stat-value-warning" id="pending-items">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- Statistics -->
-            <section class="stats-section">
-                <h2>Statistics</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-label">Total Items</span>
-                        <span id="total-items" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-label">Completed</span>
-                        <span id="completed-items" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-label">Pending</span>
-                        <span id="pending-items" class="stat-value">0</span>
+            <!-- Shopping List Card -->
+            <section class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Shopping List</h2>
+                </div>
+                <div class="card-body">
+                    <ul id="shopping-list" class="shopping-list">
+                        <!-- Items will be dynamically added here -->
+                    </ul>
+                    <div id="empty-state" class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 2L7.17 4H4C3.45 4 3 4.45 3 5C3 5.55 3.45 6 4 6H5L6.6 19.59C6.82 20.89 7.95 22 9.19 22H14.81C16.05 22 17.18 20.89 17.4 19.59L19 6H20C20.55 6 21 5.55 21 5C21 4.45 20.55 4 20 4H16.83L15 2H9ZM12 9C12.55 9 13 9.45 13 10V17C13 17.55 12.55 18 12 18C11.45 18 11 17.55 11 17V10C11 9.45 11.45 9 12 9Z" fill="currentColor" opacity="0.3"/>
+                        </svg>
+                        <p>Your shopping list is empty<br>Add your first item above!</p>
                     </div>
                 </div>
             </section>
+
         </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2026 Shopping Stats - A PWA with Offline Support</p>
-        </footer>
     </div>
 
-    <!-- Scripts -->
+    <!-- App Scripts -->
     <script src="/js/db.js"></script>
     <script src="/js/app.js"></script>
     <script>
