@@ -72,6 +72,13 @@ class ShoppingApp {
             }
         });
 
+        // Enter key in quantity field
+        this.elements.itemQuantity.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleAddItem();
+            }
+        });
+
         // Event delegation for shopping list items
         this.elements.shoppingList.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox') {
@@ -98,11 +105,16 @@ class ShoppingApp {
      * Handle adding a new item
      */
     async handleAddItem() {
-        const name = this.elements.itemName.value;
+        const name = this.elements.itemName.value.trim();
         const quantity = parseInt(this.elements.itemQuantity.value) || 1;
 
-        if (!name.trim()) {
+        if (!name) {
             alert('Please enter an item name');
+            return;
+        }
+
+        if (quantity < 1) {
+            alert('Quantity must be at least 1');
             return;
         }
 
@@ -163,18 +175,20 @@ class ShoppingApp {
      * Create HTML for a single item
      */
     createItemElement(item) {
+        const itemName = this.escapeHtml(item.name);
         return `
             <li class="shopping-item" data-item-id="${item.id}">
                 <input 
                     type="checkbox" 
                     ${item.completed ? 'checked' : ''}
+                    aria-label="Mark ${itemName} as ${item.completed ? 'incomplete' : 'complete'}"
                 >
                 <div class="item-content">
-                    <span class="item-name ${item.completed ? 'completed' : ''}">${this.escapeHtml(item.name)}</span>
+                    <span class="item-name ${item.completed ? 'completed' : ''}">${itemName}</span>
                     <span class="item-quantity">×${item.quantity}</span>
                 </div>
-                <button class="delete-btn" title="Delete item">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <button class="delete-btn" title="Delete ${itemName}" aria-label="Delete ${itemName}">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
