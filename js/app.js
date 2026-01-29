@@ -99,7 +99,7 @@ class ShoppingApp {
      */
     async handleAddItem() {
         const name = this.elements.itemName.value;
-        const quantity = this.elements.itemQuantity.value;
+        const quantity = parseInt(this.elements.itemQuantity.value) || 1;
 
         if (!name.trim()) {
             alert('Please enter an item name');
