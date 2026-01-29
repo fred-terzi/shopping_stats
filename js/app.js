@@ -44,7 +44,7 @@ class ShoppingApp {
      */
     cacheElements() {
         this.elements = {
-            form: document.getElementById('add-item-form'),
+            addBtn: document.getElementById('add-item-btn'),
             itemName: document.getElementById('item-name'),
             itemQuantity: document.getElementById('item-quantity'),
             shoppingList: document.getElementById('shopping-list'),
@@ -52,8 +52,7 @@ class ShoppingApp {
             totalItems: document.getElementById('total-items'),
             completedItems: document.getElementById('completed-items'),
             pendingItems: document.getElementById('pending-items'),
-            onlineStatus: document.getElementById('online-status'),
-            statusText: document.getElementById('status-text')
+            onlineStatus: document.getElementById('online-status')
         };
     }
 
@@ -61,18 +60,24 @@ class ShoppingApp {
      * Set up event listeners
      */
     setupEventListeners() {
-        // Form submission
-        this.elements.form.addEventListener('submit', (e) => {
-            e.preventDefault();
+        // Add button click
+        this.elements.addBtn.addEventListener('click', () => {
             this.handleAddItem();
+        });
+
+        // Enter key in item name field
+        this.elements.itemName.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleAddItem();
+            }
         });
 
         // Event delegation for shopping list items
         this.elements.shoppingList.addEventListener('change', (e) => {
-            if (e.target.classList.contains('item-checkbox')) {
-                const itemElement = e.target.closest('[id^="item-"]');
-                if (itemElement) {
-                    const itemId = parseInt(itemElement.id.replace('item-', ''));
+            if (e.target.type === 'checkbox') {
+                const itemElement = e.target.closest('.shopping-item');
+                if (itemElement && itemElement.dataset.itemId) {
+                    const itemId = parseInt(itemElement.dataset.itemId);
                     this.handleToggleItem(itemId);
                 }
             }
@@ -80,9 +85,9 @@ class ShoppingApp {
 
         this.elements.shoppingList.addEventListener('click', (e) => {
             if (e.target.closest('.delete-btn')) {
-                const itemElement = e.target.closest('[id^="item-"]');
-                if (itemElement) {
-                    const itemId = parseInt(itemElement.id.replace('item-', ''));
+                const itemElement = e.target.closest('.shopping-item');
+                if (itemElement && itemElement.dataset.itemId) {
+                    const itemId = parseInt(itemElement.dataset.itemId);
                     this.handleDeleteItem(itemId);
                 }
             }
@@ -97,6 +102,7 @@ class ShoppingApp {
         const quantity = this.elements.itemQuantity.value;
 
         if (!name.trim()) {
+            alert('Please enter an item name');
             return;
         }
 
@@ -158,22 +164,21 @@ class ShoppingApp {
      */
     createItemElement(item) {
         return `
-            <div id="item-${item.id}" class="shopping-item ${item.completed ? 'completed' : ''}">
+            <li class="shopping-item" data-item-id="${item.id}">
                 <input 
                     type="checkbox" 
-                    class="item-checkbox" 
                     ${item.completed ? 'checked' : ''}
                 >
-                <div class="item-details">
-                    <span class="item-name">${this.escapeHtml(item.name)}</span>
-                    <span class="item-quantity">x${item.quantity}</span>
+                <div class="item-content">
+                    <span class="item-name ${item.completed ? 'completed' : ''}">${this.escapeHtml(item.name)}</span>
+                    <span class="item-quantity">×${item.quantity}</span>
                 </div>
                 <button class="delete-btn" title="Delete item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
-            </div>
+            </li>
         `;
     }
 
@@ -227,8 +232,13 @@ class ShoppingApp {
     setupOnlineDetection() {
         const updateStatus = () => {
             const isOnline = navigator.onLine;
-            this.elements.onlineStatus.className = `status-dot ${isOnline ? 'online' : 'offline'}`;
-            this.elements.statusText.textContent = isOnline ? 'Online' : 'Offline';
+            if (isOnline) {
+                this.elements.onlineStatus.className = 'status-badge online';
+                this.elements.onlineStatus.textContent = 'Online';
+            } else {
+                this.elements.onlineStatus.className = 'status-badge offline';
+                this.elements.onlineStatus.textContent = 'Offline';
+            }
         };
 
         window.addEventListener('online', updateStatus);
@@ -240,7 +250,6 @@ class ShoppingApp {
      * Show error message
      */
     showError(message) {
-        // Simple error display - could be enhanced with a toast/notification system
         console.error(message);
         alert(message);
     }
