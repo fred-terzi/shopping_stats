@@ -4,10 +4,17 @@
   "description": "Shopping Stats - A PWA for tracking shopping habits",
   "main": "index.html",
   "scripts": {
-    "test": "node tests/run-tests.js",
-    "test:unit": "node tests/unit-tests.js",
-    "test:integration": "node tests/integration-tests.js",
-    "serve": "python3 -m http.server 8000"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "docs": "typedoc"
   },
   "keywords": [
     "pwa",
@@ -16,5 +23,30 @@
     "offline"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "fake-indexeddb": "^6.2.5",
+    "happy-dom": "^20.4.0",
+    "prettier": "^3.8.1",
+    "typedoc": "^0.28.16",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0",
+    "vite": "^7.3.1",
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "dexie": "^4.3.0"
+  }
 }

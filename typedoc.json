@@ -1,0 +1,11 @@
+{
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand",
+  "out": "./docs",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "exclude": ["**/tests/**", "**/node_modules/**"],
+  "readme": "README.md",
+  "name": "Shopping Stats API Documentation"
+}

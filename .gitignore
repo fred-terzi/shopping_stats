@@ -17,8 +17,21 @@ _site/
 # Details at https://github.com/github/pages-gem/issues/768
 Gemfile.lock
 
-# Node modules (if any)
+# Node modules
 node_modules/
+
+# Build output
+dist/
+docs/
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # SVG source files in icons directory (keep PNGs only)
 icons/*.svg
