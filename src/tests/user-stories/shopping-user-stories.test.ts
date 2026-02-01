@@ -289,7 +289,7 @@ describe('User Stories', () => {
     it('should handle item names with various character sets', async () => {
       const names = [
         'Simple Item',
-        'Item with émoji 🛒',
+        'Item with emoji 🛒',
         'Item with ñ and ü',
         'Item with 中文',
         'Item with العربية',
